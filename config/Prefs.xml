@@ -1,0 +1,34 @@
+<Preferences>
+  <Sourcepath SP="C:\Binaries" />
+  <Destinationpath DP="\\Server\Share\Sources" />
+  <SiteCode SC="" />
+  <EndMessage EM="" />
+  <SelectedDP>
+    <DP Name="" />
+  </SelectedDP>
+  <SelectedDPGroup>
+    <DPG Name="" />
+  </SelectedDPGroup>
+  <Collection>
+    <Prefix />
+    <Suffix />
+  </Collection>
+  <SCCM_Prefs>
+    <Autoconnect>False</Autoconnect>
+    <AutoImport>False</AutoImport>
+    <AutoDistribute>False</AutoDistribute>
+    <AutoCollection>False</AutoCollection>
+    <AutoADGroup>False</AutoADGroup>
+    <LimitingCollection>SMS00001</LimitingCollection>
+    <LDAP>OU=Groups,DC=Contoso,DC=Com</LDAP>
+    <IntuneAppfolder></IntuneAppfolder>
+  </SCCM_Prefs>
+  <Settings>
+    <Save_SP>True</Save_SP>
+    <Save_DP>True</Save_DP>
+    <Save_SiteCode>True</Save_SiteCode>
+    <Save_DistPoint>True</Save_DistPoint>
+    <Save_DistGroup>True</Save_DistGroup>
+    <IntunePackage>False</IntunePackage>
+  </Settings>
+</Preferences>

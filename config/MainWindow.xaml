@@ -1,0 +1,149 @@
+﻿<Window x:Class="Tabbed_Gui.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tabbed_Gui"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="917.667" Width="829.333" SizeToContent="Manual" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="410*"/>
+            <ColumnDefinition Width="413*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl ScrollViewer.HorizontalScrollBarVisibility="Visible" Grid.ColumnSpan="2" Margin="0,0,-0.333,-0.333">
+            <TabItem x:Name="Package_Creation" Header="Application Details" Margin="0,0,-98,-2">
+                <Grid Background="White" ScrollViewer.HorizontalScrollBarVisibility="Visible" Height="Auto" Margin="0,0,-0.333,-0.333" VerticalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="72*"/>
+                        <ColumnDefinition Width="22*"/>
+                        <ColumnDefinition Width="723*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="Vendor" HorizontalAlignment="Left" Height="23" Margin="134,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="262" TabIndex="0" Grid.Column="2"/>
+                    <TextBox x:Name="Appname" HorizontalAlignment="Left" Height="23" Margin="134,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="262" TabIndex="1" Grid.Column="2"/>
+                    <TextBox x:Name="Appversion" HorizontalAlignment="Left" Height="23" Margin="134,126,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="262" TabIndex="2" Grid.Column="2"/>
+                    <TextBox x:Name="AppLanguage" HorizontalAlignment="Left" Height="23" Margin="134,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="262" TabIndex="3" Grid.Column="2"/>
+                    <TextBox x:Name="RegIDYY" HorizontalAlignment="Left" Height="23" Margin="173,306,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" TabIndex="7" ToolTip="YYYY" Text="YYYY" Grid.Column="2"/>
+                    <Label Content="Application Vendor *" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" FontSize="10" Width="122" Height="23" Grid.ColumnSpan="3"/>
+                    <Label Content="Application Name *" HorizontalAlignment="Left" Margin="10,89,0,0" VerticalAlignment="Top" FontSize="10" Width="122" Height="23" Grid.ColumnSpan="3"/>
+                    <Label Content="Application Version *" HorizontalAlignment="Left" Margin="10,126,0,0" VerticalAlignment="Top" FontSize="10" Width="122" Height="23" Grid.ColumnSpan="3"/>
+                    <Label Content="Application Language" HorizontalAlignment="Left" Margin="10,163,0,0" VerticalAlignment="Top" FontSize="10" Width="122" Height="23" RenderTransformOrigin="0.506,0.994" Grid.ColumnSpan="3"/>
+                    <Label Content="Application Architecture *" HorizontalAlignment="Left" Margin="10,197,0,0" VerticalAlignment="Top" FontSize="10" Width="134" Height="23" Grid.ColumnSpan="3"/>
+                    <Label Content="Software ID Tag *" HorizontalAlignment="Left" Margin="10,306,0,0" VerticalAlignment="Top" FontSize="10" Width="122" Height="23" ToolTip="Format : eg : Regid.1991-06.Com.Microsoft" Grid.ColumnSpan="3"/>
+                    <Button x:Name="Generate" Content="Generate Application" HorizontalAlignment="Left" Height="38" Margin="570,804,0,0" VerticalAlignment="Top" Width="119" TabIndex="30" Grid.Column="2"/>
+                    <Label Content="Installation" HorizontalAlignment="Left" Height="33" Margin="14,354,0,0" VerticalAlignment="Top" Width="107" Grid.ColumnSpan="3"/>
+                    <ComboBox x:Name="InstallType" HorizontalAlignment="Left" Height="26" Margin="19,357,0,0" VerticalAlignment="Top" Width="152" IsReadOnly="True" SelectedIndex="0" TabIndex="15" Grid.Column="2">
+                        <ListBoxItem Content="MSI"/>
+                        <ListBoxItem Content="Script"/>
+                    </ComboBox>
+                    <TextBox x:Name="InstallPath" HorizontalAlignment="Left" Height="26" Margin="176,357,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="193" TabIndex="16" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Column="2"/>
+                    <TextBox x:Name="InstallPath_Parameters" HorizontalAlignment="Left" Height="26" Margin="385,357,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="291" TabIndex="17" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Column="2"/>
+                    <TextBlock x:Name="Installtext1" HorizontalAlignment="Left" Height="33" Margin="225,336,0,0" TextWrapping="Wrap" Text="MSI Filename" VerticalAlignment="Top" Width="140" Grid.Column="2"/>
+                    <TextBlock x:Name="InstallText2" HorizontalAlignment="Left" Height="33" Margin="425.667,336,0,0" TextWrapping="Wrap" Text="additional MSI parameters (if needed)" VerticalAlignment="Top" Width="208" Grid.Column="2"/>
+                    <ComboBox x:Name="AppArchitecture" HorizontalAlignment="Left" Height="23" Margin="134,197,0,0" VerticalAlignment="Top" Width="262" SelectedIndex="0" TabIndex="4" Grid.Column="2">
+                        <ListBoxItem Content="32-Bit (X86)"/>
+                        <ListBoxItem Content="64-Bit (X64)"/>
+                    </ComboBox>
+                    <TextBox x:Name="UninstallCmd" HorizontalAlignment="Left" Height="27" Margin="176,421,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="500" TabIndex="19" Grid.Column="2"/>
+                    <Label Content="Application Revision" HorizontalAlignment="Left" Margin="10,233,0,0" VerticalAlignment="Top" FontSize="10" Width="122" Grid.ColumnSpan="3"/>
+                    <TextBox x:Name="AppRevision" HorizontalAlignment="Left" Height="23" Margin="134,233,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="262" TabIndex="5" Grid.Column="2"/>
+                    <ProgressBar x:Name="Progress" HorizontalAlignment="Left" Height="38" Margin="19,804,0,0" VerticalAlignment="Top" Width="627" Cursor="No" Grid.ColumnSpan="3"/>
+                    <TextBlock x:Name="uninstallText" HorizontalAlignment="Left" Height="27" Margin="19,425,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="107" Text="Uninstallation" Grid.ColumnSpan="3"/>
+                    <TextBox x:Name="InputSource" HorizontalAlignment="Left" Height="32" Margin="111,470,0,0" TextWrapping="Wrap" Text="Enter full path to source-binaries here" VerticalAlignment="Top" Width="565" TabIndex="25" Grid.Column="2"/>
+                    <TextBox x:Name="InputDestination" HorizontalAlignment="Left" Height="32" Margin="111,528,0,0" TextWrapping="Wrap" Text="Enter UNC destinatiation path here where the full package will be copied to" VerticalAlignment="Top" Width="565" TabIndex="26" Grid.Column="2"/>
+                    <Label Content="Package binaries Path *" HorizontalAlignment="Left" Height="32" Margin="14,470,0,0" VerticalAlignment="Top" Width="148" Grid.ColumnSpan="3"/>
+                    <Label Content="Destination Package path (UNC) *" HorizontalAlignment="Left" Height="32" Margin="14,528,0,0" VerticalAlignment="Top" Width="191" Grid.ColumnSpan="3"/>
+                    <Label Content="* Required Fields" HorizontalAlignment="Left" Height="37" Margin="19,710,0,0" VerticalAlignment="Top" Width="186" Foreground="Red" Grid.ColumnSpan="3"/>
+                    <Label x:Name="Package_progress" Content="" HorizontalAlignment="Left" Height="37" Margin="19,752,0,0" VerticalAlignment="Top" Width="627" Grid.ColumnSpan="3"/>
+                    <Label Content="Regid." HorizontalAlignment="Left" Height="28" Margin="134,306,0,0" VerticalAlignment="Top" Width="42" Grid.Column="2"/>
+                    <Label Content="-" HorizontalAlignment="Left" Height="28" Margin="214,274,0,0" VerticalAlignment="Top" Width="13" Grid.Column="2"/>
+                    <TextBox x:Name="RegIDMM" HorizontalAlignment="Left" Height="23" Margin="225,306,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" TabIndex="8" RenderTransformOrigin="1.578,0.5" ToolTip="MM" Text="MM" Grid.Column="2"/>
+                    <Label Content="." HorizontalAlignment="Left" Height="28" Margin="251,274,0,0" VerticalAlignment="Top" Width="13" Grid.Column="2"/>
+                    <TextBox x:Name="RegIDDomain" HorizontalAlignment="Left" Height="23" Margin="260,306,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="136" TabIndex="9" ToolTip="Domain-Name in reverse order (eg, Com.Microsoft)" Text="Com.Domainname" Grid.Column="2"/>
+                    <Image x:Name="Logo" HorizontalAlignment="Left" Height="134" Margin="417,54,0,0" VerticalAlignment="Top" Width="272" Source="ReplacePath" IsEnabled="False" Grid.Column="2"/>
+                    <Label x:Name="LicenseText" Content="License Required *" HorizontalAlignment="Left" Height="23" Margin="411,306,0,0" VerticalAlignment="Top" Width="108" Grid.Column="2"/>
+                    <ComboBox x:Name="License" HorizontalAlignment="Left" Height="23" Margin="534,306,0,0" VerticalAlignment="Top" Width="59" IsReadOnly="True" TabIndex="10" Grid.Column="2">
+                        <ListBoxItem Content="Yes"/>
+                        <ListBoxItem Content="No"/>
+                    </ComboBox>
+                    <TextBox x:Name="VendorLookup" HorizontalAlignment="Left" Height="23" Margin="194,271,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" TabIndex="6" Text="for example : Adobe.com" Grid.Column="2"/>
+                    <Button x:Name="BTN_Lookup" Content="Lookup !" HorizontalAlignment="Left" Height="23" Margin="401,271,0,0" VerticalAlignment="Top" Width="74" Grid.Column="2"/>
+                    <Label Content="Provide website of Vendor for RegID lookup (experimental)" HorizontalAlignment="Left" Margin="10,271,0,0" VerticalAlignment="Top" FontSize="10" Width="273" Height="23" ToolTip="Format : eg : Regid.1991-06.Com.Microsoft" Grid.ColumnSpan="3"/>
+                    <ComboBox x:Name="UnInstallType" HorizontalAlignment="Left" Height="26" Margin="19,422,0,0" VerticalAlignment="Top" Width="152" IsReadOnly="True" SelectedIndex="0" TabIndex="18" Grid.Column="2">
+                        <ListBoxItem Content="Add/Remove Programs"/>
+                        <ListBoxItem Content="Command Line"/>
+                        <ListBoxItem Content="MSI Product Code"/>
+                    </ComboBox>
+                    <TextBlock x:Name="UninstallTxt" HorizontalAlignment="Left" Height="33" Margin="176,394,0,0" TextWrapping="Wrap" Text="Application name in Add/Remove programs to uninstall" VerticalAlignment="Top" Width="500" Grid.Column="2"/>
+                    <TextBox x:Name="TB_EndMessage" HorizontalAlignment="Left" Height="67" Margin="19,638,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="751" Grid.ColumnSpan="3" TabIndex="27"/>
+                    <Label Content="Message at the end of the installation (Leave blank if not needed/wanted)" HorizontalAlignment="Left" Height="32" Margin="19,601,0,0" VerticalAlignment="Top" Width="756" Grid.ColumnSpan="3"/>
+                    <Button x:Name="BTN_FilePicker" Content="Browse for install file" HorizontalAlignment="Left" Height="33" Margin="14,10,0,0" VerticalAlignment="Top" Width="246" Grid.ColumnSpan="3"/>
+                    <Label Content="Target package path :" HorizontalAlignment="Left" Height="32" Margin="14,566,0,0" VerticalAlignment="Top" Width="191" Grid.ColumnSpan="3"/>
+                    <Label x:Name="LB_TargetPath_" Content="" Grid.Column="2" HorizontalAlignment="Left" Height="32" Margin="111,566,0,0" VerticalAlignment="Top" Width="565"/>
+                </Grid>
+
+
+            </TabItem>
+            <TabItem x:Name="SCCM" Header="SCCM" IsEnabled="False" Margin="97,0,-205,-2">
+                <Grid Background="White">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="147*"/>
+                        <ColumnDefinition Width="44*"/>
+                        <ColumnDefinition Width="626*"/>
+                    </Grid.ColumnDefinitions>
+                    <ProgressBar x:Name="Progress_SCCM" HorizontalAlignment="Left" Height="38" Margin="24.666,118,0,0" VerticalAlignment="Top" Width="627" Grid.ColumnSpan="3"/>
+                    <Button x:Name="Import_SCCM" Content="Import into SCCM" HorizontalAlignment="Left" Height="38" Margin="470.999,118,0,0" VerticalAlignment="Top" Width="145" TabIndex="8" Grid.Column="2" IsEnabled="False"/>
+                    <Button x:Name="Connect_SCCM" Content="Connect to SCCM" HorizontalAlignment="Left" Height="40" Margin="22,19,0,0" VerticalAlignment="Top" Width="152" TabIndex="1" Grid.ColumnSpan="2"/>
+                    <Label x:Name="sitecode" Content="" Grid.Column="2" HorizontalAlignment="Left" Height="40" Margin="62,19,0,0" VerticalAlignment="Top" Width="137"/>
+                    <ListBox x:Name="DP" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="207.333" Margin="24.666,216.333,0,0" VerticalAlignment="Top" Width="782" SelectionMode="Extended" TabIndex="20"/>
+                    <Label Grid.ColumnSpan="3" Content="Distribution Points" HorizontalAlignment="Left" Height="39" Margin="24.666,182.333,0,0" VerticalAlignment="Top" Width="180"/>
+                    <ListBox x:Name="DPGroup" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="179.334" Margin="21,467.666,0,0" VerticalAlignment="Top" Width="782" SelectionMode="Extended" TabIndex="28"/>
+                    <Label Grid.ColumnSpan="3" Content="Distribution Point Groups" HorizontalAlignment="Left" Height="39" Margin="24.666,428.666,0,0" VerticalAlignment="Top" Width="180"/>
+                    <Button x:Name="Distribute" Content="Distribute Content" HorizontalAlignment="Left" Height="38" Margin="467.333,689,0,0" VerticalAlignment="Top" Width="145" TabIndex="40" Grid.Column="2" IsEnabled="False"/>
+                    <Label x:Name="Import_Progress" Content="" HorizontalAlignment="Left" Height="37" Margin="24.666,83,0,0" VerticalAlignment="Top" Width="627" Grid.ColumnSpan="3"/>
+                    <ProgressBar x:Name="PB_Progress_distribute" HorizontalAlignment="Left" Height="38" Margin="22,689,0,0" VerticalAlignment="Top" Width="627" Grid.ColumnSpan="3"/>
+                    <Label x:Name="distribute_progress" Content="" HorizontalAlignment="Left" Height="37" Margin="21,651,0,0" VerticalAlignment="Top" Width="627" Grid.ColumnSpan="3"/>
+                    <TextBox x:Name="Prefix" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="38" Margin="21,808,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="143" TabIndex="50"/>
+                    <TextBox x:Name="Suffix" Height="38" Margin="278.333,808,168.667,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="2" TabIndex="60"/>
+                    <Button x:Name="Generate_Collections" Content="Generate Collections" HorizontalAlignment="Left" Height="38" Margin="467.333,808,0,0" VerticalAlignment="Top" Width="145" TabIndex="70" Grid.Column="2" IsEnabled="False"/>
+                    <Label Grid.ColumnSpan="3" Content="Collection Prefix" HorizontalAlignment="Left" Height="28" Margin="21,780,0,0" VerticalAlignment="Top" Width="180"/>
+                    <Label Content="Collection Suffix" HorizontalAlignment="Left" Height="28" Margin="278.333,780,0,0" VerticalAlignment="Top" Width="180" Grid.Column="2"/>
+                    <Label Content="-" HorizontalAlignment="Left" Height="38" Margin="18.333,812,0,0" VerticalAlignment="Top" Width="16" Grid.Column="1"/>
+                    <Label Content="-" HorizontalAlignment="Left" Height="38" Margin="264.333,812,0,0" VerticalAlignment="Top" Width="16" Grid.Column="2"/>
+                    <Label x:Name="Collections_info" Content="" HorizontalAlignment="Left" Height="37" Margin="21,743,0,0" VerticalAlignment="Top" Width="434" Grid.ColumnSpan="3"/>
+                    <TextBlock x:Name="Collname" Grid.Column="1" HorizontalAlignment="Left" Margin="34.333,808,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="273.667" Grid.ColumnSpan="2"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="Tab_Preferences" Header="Settings" Margin="206,0,-314,-2">
+                <Grid Background="White">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="49*"/>
+                        <ColumnDefinition Width="222*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="CB_SourcePath" Content="Source Path" HorizontalAlignment="Left" Margin="120,65,0,0" VerticalAlignment="Top" IsChecked="True" Grid.ColumnSpan="2" Height="15" Width="201" TabIndex="10"/>
+                    <CheckBox x:Name="CB_DestinationPath" Content="Destination Path" HorizontalAlignment="Left" Margin="120,100,0,0" VerticalAlignment="Top" IsChecked="True" Grid.ColumnSpan="2" Height="15" Width="201" TabIndex="15"/>
+                    <CheckBox x:Name="CB_SiteCode" Content="SCCM Site-Code" HorizontalAlignment="Left" Margin="120,135,0,0" VerticalAlignment="Top" IsChecked="True" Grid.ColumnSpan="2" Height="15" Width="201" TabIndex="20"/>
+                    <CheckBox x:Name="CB_Auto_Sccm" Grid.ColumnSpan="2" Content="Connect to SCCM" HorizontalAlignment="Left" Height="31" Margin="120,340,0,0" VerticalAlignment="Top" Width="182" TabIndex="50"/>
+                    <CheckBox x:Name="CB_Auto_Import" Grid.ColumnSpan="2" Content="Import Application" HorizontalAlignment="Left" Height="31" Margin="120,375,0,0" VerticalAlignment="Top" Width="182" TabIndex="55"/>
+                    <CheckBox x:Name="CB_Auto_Distribute" Grid.ColumnSpan="2" Content="Distribute Application to preselected DP/DP groups" HorizontalAlignment="Left" Height="31" Margin="120,410,0,0" VerticalAlignment="Top" Width="300" TabIndex="60"/>
+                    <CheckBox x:Name="CB_DP" Content="Selected Distribution points" HorizontalAlignment="Left" Margin="120,170,0,0" VerticalAlignment="Top" IsChecked="True" Grid.ColumnSpan="2" Height="15" Width="201" TabIndex="25"/>
+                    <CheckBox x:Name="CB_DPG" Content="Selected Distribution Point Groups" HorizontalAlignment="Left" Margin="120,205,0,0" VerticalAlignment="Top" IsChecked="True" Grid.ColumnSpan="2" TabIndex="30"/>
+                    <Label Grid.ColumnSpan="2" Content="Remember the following settings" HorizontalAlignment="Left" Height="40" Margin="39,25,0,0" VerticalAlignment="Top" Width="363"/>
+                    <Label x:Name="TB_AutoPerform" Grid.ColumnSpan="2" Content="Auto-Perform the following Actions after the package is created succesfully" HorizontalAlignment="Left" Height="40" Margin="39,284.333,0,0" VerticalAlignment="Top" Width="702"/>
+                    <CheckBox x:Name="CB_Auto_Collection" Grid.ColumnSpan="2" Content="Create Collections" HorizontalAlignment="Left" Height="31" Margin="120,445,0,0" VerticalAlignment="Top" Width="300" TabIndex="65"/>
+                    <Button x:Name="BTN_SaveSettings" Content="Save Settings" Grid.Column="1" HorizontalAlignment="Left" Height="55" Margin="315.667,11,0,0" VerticalAlignment="Top" Width="214" TabIndex="200"/>
+                    <TextBox x:Name="TB_DefaultLimiting" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="92.609,558,0,0" TextWrapping="Wrap" Text="SMS00001" VerticalAlignment="Top" Width="99" TabIndex="100"/>
+                    <Label Content="Default limiting collection ID" HorizontalAlignment="Left" Height="34" Margin="39,558,0,0" VerticalAlignment="Top" Width="177" Grid.ColumnSpan="2"/>
+                    <Label Content="OU path for AD Groups *" HorizontalAlignment="Left" Height="34" Margin="39,610,0,0" VerticalAlignment="Top" Width="177" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="TB_LDAP" Grid.Column="1" HorizontalAlignment="Right" Height="34" Margin="0,610,33.667,0" TextWrapping="Wrap" Text="OU=ADGroups,DC=Controso,DC=Com" VerticalAlignment="Top" Width="543" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TabIndex="110"/>
+                    <CheckBox x:Name="CB_Auto_ADGroup" Grid.ColumnSpan="2" Content="Auto create AD Groups *" HorizontalAlignment="Left" Height="25" Margin="120,480,0,0" VerticalAlignment="Top" Width="232" TabIndex="70"/>
+                    <Label Grid.ColumnSpan="2" Content="* Install Powershell Active Directory module to enable AD Integration" HorizontalAlignment="Left" Height="43" Margin="39,780,0,0" VerticalAlignment="Top" Width="469"/>
+                    <CheckBox x:Name="CB_Intunepackage" Grid.ColumnSpan="2" Content="Create Intune Win32 app package" HorizontalAlignment="Left" Height="25" Margin="120,512,0,0" VerticalAlignment="Top" Width="232" TabIndex="70"/>
+                    <TextBox x:Name="TB_IntuneFolder" Grid.Column="1" HorizontalAlignment="Right" Height="34" Margin="0,666,33.609,0" TextWrapping="Wrap" Text="C:\Temp\IntuneApps" VerticalAlignment="Top" Width="543" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TabIndex="110"/>
+                    <Label Content="Intune App folder" HorizontalAlignment="Left" Height="34" Margin="39,666,0,0" VerticalAlignment="Top" Width="177" Grid.ColumnSpan="2"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

@@ -1,0 +1,59 @@
+<swid>
+  <RegId>
+    <Vendor Name="Microsoft">
+      <Year>1991</Year>
+      <Month>06</Month>
+      <Domain>Com.Microsoft</Domain>
+    </Vendor>
+    <Vendor name="Adobe">
+      <Year>1986</Year>
+      <Month>11</Month>
+      <Domain>Com.Adobe</Domain>
+    </Vendor>
+    <Vendor Name="7-Zip">
+      <Year>2000</Year>
+      <Month>09</Month>
+      <Domain>ORG.7-ZIP</Domain>
+    </Vendor>
+    <Vendor Name="IBM">
+      <Year>1986</Year>
+      <Month>03</Month>
+      <Domain>COM.IBM</Domain>
+    </Vendor>
+    <Vendor Name="Google">
+      <Year>1997</Year>
+      <Month>09</Month>
+      <Domain>COM.GOOGLE</Domain>
+    </Vendor>
+    <Vendor Name="Apple">
+      <Year>1987</Year>
+      <Month>02</Month>
+      <Domain>COM.APPLE</Domain>
+    </Vendor>
+    <Vendor Name="Oracle">
+      <Year>1988</Year>
+      <Month>12</Month>
+      <Domain>COM.ORACLE</Domain>
+    </Vendor>
+    <Vendor Name="SAP">
+      <Year>1995</Year>
+      <Month>01</Month>
+      <Domain>COM.SAP</Domain>
+    </Vendor>
+    <Vendor Name="Symantec">
+      <Year>1992</Year>
+      <Month>11</Month>
+      <Domain>COM.SYMANTEC</Domain>
+    </Vendor>
+    <Vendor Name="HP">
+      <Year>1986</Year>
+      <Month>03</Month>
+      <Domain>COM.HP</Domain>
+    </Vendor>
+    <Vendor Name="SalesForce">
+      <Year>1998</Year>
+      <Month>12</Month>
+      <Domain>COM.SALESFORCE</Domain>
+    </Vendor>
+  </RegId>
+</swid>
