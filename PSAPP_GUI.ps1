@@ -901,6 +901,9 @@ Function Distribute-Content{
 
         If ($TotalselectedDP -gt "0")
         {
+                
+        if ($wpfCB_Auto_Distribute.isenabled -eq $false) {$wpfCB_Auto_Distribute.isenabled = $true}
+
         [float]$DPBlocks = (100 / $TotalselectedDP)
         $dpprogress = 0
 

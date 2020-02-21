@@ -55,5 +55,15 @@
       <Month>12</Month>
       <Domain>COM.SALESFORCE</Domain>
     </Vendor>
+    <Vendor Name="Google LLC">
+      <Year>1997</Year>
+      <Month>09</Month>
+      <Domain>COM.GOOGLE</Domain>
+    </Vendor>
+    <Vendor Name="Igor Pavlov">
+      <Year>2000</Year>
+      <Month>01</Month>
+      <Domain>COM.7-ZIP</Domain>
+    </Vendor>
   </RegId>
 </swid>
