@@ -719,6 +719,17 @@ Function Generate-IntunePackage{
                 
         }
 
+        if ( ((Get-ChildItem $IntunetargetPath | Measure-Object).Count) -gt 0)
+        {
+                log-item -logline "Intune Application target folder is NOT empty, deleting content" -severity WARNING
+                write-host "not empty"
+                Remove-Item -Path "$IntunetargetPath\*" -recurse -Force
+        }
+        else {
+                log-item -logline "Intune Application target folder is empty, continuing... "
+                write-host "empty"
+        }
+
         # Intune commandline
         #  IntuneWinAppUtil -c <setup_folder> -s <source_setup_file> -o <output_folder> <-q>
         log-item -logline ("Starting Intune package generation")
@@ -735,7 +746,7 @@ Function Generate-IntunePackage{
                 log-item -logline ("Generated Intune filename = $IntuneFile")
                 $Newname = $wpfAppname.text + "_" + $wpfappversion.Text + ".intunewin"
                 log-item -logline ("New Intune Filename = $Newname")
-                Rename-Item -Path $IntunetargetPath\$IntuneFile -NewName $Newname
+                Rename-Item -Path $IntunetargetPath\$IntuneFile -NewName $Newname -Force
                 
                 Generate-Detection
 
@@ -743,7 +754,7 @@ Function Generate-IntunePackage{
                 'Intune UnInstall Commandline = Deploy-Application.exe -DeploymentType "UnInstall"' | out-file -FilePath "$IntunetargetPath\Instructions.TXT" -Append
                 'Intune Detection Method (Powershell - available in separate Detection_Method.PS1 file) = ' | out-file -FilePath "$IntunetargetPath\Instructions.TXT" -Append
                 $global:intunedection | out-file -FilePath "$IntunetargetPath\Instructions.TXT" -Append
-                $global:intunedection | out-file -FilePath "$IntunetargetPath\Detection_Method.PS1"
+                $global:intunedection | out-file -FilePath "$IntunetargetPath\Detection_Method.PS1" -Encoding ascii
 
                 [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic') | Out-Null
                 [Microsoft.VisualBasic.Interaction]::MsgBox("Intune package created with exitcode $($exitcode.exitcode). Instructions file Generated",'OKOnly,Information',"Intune Package")
