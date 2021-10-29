@@ -85,6 +85,9 @@ param(  $logline,
         }
 }
 
+# Hides the PowerShell console window
+powershell.exe -WindowStyle Hidden -Command ""
+
 Log-Item -logline "Starting Powershell AppDeployment Toolkit GUI version $gui_version"
 
 try 
