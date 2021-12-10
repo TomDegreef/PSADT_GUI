@@ -271,59 +271,6 @@ function Check_and_Save_xml
                 log-item -logline ("fRegID information was already available in swid.xml")
         }
 }
-function lookup-url
-{
-        param($url)
-        
-        [Regex]$regidYY = "[1-2]\d{3}"
-        [Regex]$regidMM = "[0-1][0-9]"
-        
-        $verify = $url.split(".")
-
-        $error.clear()
-
-        $headers=@{}
-        $headers.Add("Accept", "application/json")
-        $headers.Add("authorization", "Token token=9f27053628bc1eed8d0b382ece8fed7a")
-        $response = Invoke-WebRequest -Uri "https://jsonwhois.com/api/v1/whois?domain=$url" -Method GET -Headers $headers -UseBasicParsing
-
-        $Response = ConvertFrom-Json -InputObject $response
-        log-item  ("Returned value from whois database : $($Response.created_on)")
-
-            if ($error.count -eq 0)
-            { 
-            $myyear = $Response.created_on.Substring(0,4)
-            $mymonth = $Response.created_on.Substring(5,2)
-        
-                if ($myyear -match $regidyy -and $mymonth -match $regidmm)
-                    {
-                        $wpfregidYY.Text =  $myyear
-                        $wpfregidYY.Tag = 'cleared' 
-                        $WPFRegIDYY.background = "green"
-                        $wpfregidMM.Text = $mymonth
-                        $wpfregidMM.Tag = 'cleared'
-                        $wpfregidMM.background = "green"
-                        $wpfregidDomain.Text = $verify[1] + "." + $verify[0]
-                        $wpfregidDomain.Tag = 'cleared'
-                        $wpfregidDomain.background = "green"
-                        log-item -logline ("Lookup of " + $wpfVendorLookup.text + " succeeded. Pre-filling data in form") 
-                    }
-                else
-                    {
-                        [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic') | Out-Null
-                        [Microsoft.VisualBasic.Interaction]::MsgBox("Lookup failed. Please check manually at www.whois.net",'OKOnly,Information',"URL Lookup Failed")
-                        log-item -logline ("Lookup failed for " + $wpfVendorLookup.text ) -severity Error
-                    }
-            }
-            else
-            {
-                [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic') | Out-Null
-                [Microsoft.VisualBasic.Interaction]::MsgBox("Lookup failed. Please check manually at www.whois.net",'critical',"URL Lookup Failed")
-                log-item -logline ("Lookup failed for " + $wpfVendorLookup.text ) -severity Error
-            }
-
-        
-}              
 
 Function Fill-swid
 {
@@ -578,8 +525,6 @@ Function File-Picker
                 $WPFAppLanguage.Background = "white"
                 $WPFAppRevision.Text = ""
                 $WPFAppRevision.Background = "white"
-                $wpfVendorLookup.Text = ""
-                $wpfVendorLookup.Background = "white"
                 $wpfregidYY.Text = "YYYY"
                 $wpfregidYY.Background = "white"
                 $wpfregidMM.Text = "MM"
@@ -1574,29 +1519,6 @@ $wpfUnInstallType.add_Selectionchanged(
 
         }
 )
-
-$wpfBTN_Lookup.add_click({
-        $url = $wpfVendorLookup.text
-        $url = $url.toupper()
-        
-        if ($url.substring(0,3) -eq "WWW")
-        {
-                $url = $url.trimstart("W.")
-                lookup-url $url
-        }
-        else 
-        {
-                lookup-url $url
-        }
-})
-
-$wpfVendorLookup.add_gotfocus({
-        if($wpfVendorLookup.Tag -ne 'cleared') 
-        { # clear the text box
-                $wpfVendorLookup.Text = ''
-                $wpfVendorLookup.Tag = 'cleared' # use any text you want to indicate that its cleared
-        }
-})
 
 $wpfinputSource.add_gotfocus({
 
