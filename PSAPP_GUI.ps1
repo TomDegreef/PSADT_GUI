@@ -13,9 +13,10 @@
     Twitter:     @TomDegreef
     Email:       Tom.Degreef@OSCC.Be
     Created:     2017-08-23
-    Updated:     2018-02-06
+    Updated:     2021-12-10
     
     Version history
+    1.5   - (2021-12-10) Hide PowerShell console window, add feature to get language from MSI file, remove swid lookup, update XAML, add scrollbars
     1.4   - Default DT is now install for system, fixed uninstall but where swidtag wasn't removed properly if there was a space in the appname, Creates intune W32 packages, Browse for MSI,EXE files, Whois lookup fixed
     1.3   - (2018-02-06) Created Preferences TAB with automatic actions for SCCM, Specify your own limiting collection, create security groups in AD and link them to collections
     1.2   - (2017-09-27) SWID-Tags are Cached and will be pre-filled out if vendor is used again, Source & Destination path are cached, removed bug in detection method, added listbox for uninstall functionality
@@ -26,7 +27,7 @@
 	Http://www.OSCC.Be
 #>
 
-$gui_version = '1.4'
+$gui_version = '1.5'
 $logfile = "$env:systemdrive\temp\PSAPPgui\PSAPP_Gui.txt"
 $logmodule = "$env:systemdrive\temp\PSAPPgui\PSAPP_Gui.log"
 $global:packagepath = ""
