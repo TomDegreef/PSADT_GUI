@@ -13,9 +13,10 @@
     Twitter:     @TomDegreef
     Email:       Tom.Degreef@OSCC.Be
     Created:     2017-08-23
-    Updated:     2018-02-06
+    Updated:     2021-12-10
     
     Version history
+    1.5   - (2021-12-10) Hide PowerShell console window, add feature to get language from MSI file, remove swid lookup, update XAML, add scrollbars
     1.4   - Default DT is now install for system, fixed uninstall but where swidtag wasn't removed properly if there was a space in the appname, Creates intune W32 packages, Browse for MSI,EXE files, Whois lookup fixed
     1.3   - (2018-02-06) Created Preferences TAB with automatic actions for SCCM, Specify your own limiting collection, create security groups in AD and link them to collections
     1.2   - (2017-09-27) SWID-Tags are Cached and will be pre-filled out if vendor is used again, Source & Destination path are cached, removed bug in detection method, added listbox for uninstall functionality
@@ -26,7 +27,7 @@
 	Http://www.OSCC.Be
 #>
 
-$gui_version = '1.4'
+$gui_version = '1.5'
 $logfile = "$env:systemdrive\temp\PSAPPgui\PSAPP_Gui.txt"
 $logmodule = "$env:systemdrive\temp\PSAPPgui\PSAPP_Gui.log"
 $global:packagepath = ""
@@ -84,6 +85,9 @@ param(  $logline,
         $output | out-file $Logfile -append
         }
 }
+
+# Hides the PowerShell console window
+powershell.exe -WindowStyle Hidden -Command ""
 
 Log-Item -logline "Starting Powershell AppDeployment Toolkit GUI version $gui_version"
 
@@ -268,59 +272,6 @@ function Check_and_Save_xml
                 log-item -logline ("fRegID information was already available in swid.xml")
         }
 }
-function lookup-url
-{
-        param($url)
-        
-        [Regex]$regidYY = "[1-2]\d{3}"
-        [Regex]$regidMM = "[0-1][0-9]"
-        
-        $verify = $url.split(".")
-
-        $error.clear()
-
-        $headers=@{}
-        $headers.Add("Accept", "application/json")
-        $headers.Add("authorization", "Token token=9f27053628bc1eed8d0b382ece8fed7a")
-        $response = Invoke-WebRequest -Uri "https://jsonwhois.com/api/v1/whois?domain=$url" -Method GET -Headers $headers -UseBasicParsing
-
-        $Response = ConvertFrom-Json -InputObject $response
-        log-item  ("Returned value from whois database : $($Response.created_on)")
-
-            if ($error.count -eq 0)
-            { 
-            $myyear = $Response.created_on.Substring(0,4)
-            $mymonth = $Response.created_on.Substring(5,2)
-        
-                if ($myyear -match $regidyy -and $mymonth -match $regidmm)
-                    {
-                        $wpfregidYY.Text =  $myyear
-                        $wpfregidYY.Tag = 'cleared' 
-                        $WPFRegIDYY.background = "green"
-                        $wpfregidMM.Text = $mymonth
-                        $wpfregidMM.Tag = 'cleared'
-                        $wpfregidMM.background = "green"
-                        $wpfregidDomain.Text = $verify[1] + "." + $verify[0]
-                        $wpfregidDomain.Tag = 'cleared'
-                        $wpfregidDomain.background = "green"
-                        log-item -logline ("Lookup of " + $wpfVendorLookup.text + " succeeded. Pre-filling data in form") 
-                    }
-                else
-                    {
-                        [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic') | Out-Null
-                        [Microsoft.VisualBasic.Interaction]::MsgBox("Lookup failed. Please check manually at www.whois.net",'OKOnly,Information',"URL Lookup Failed")
-                        log-item -logline ("Lookup failed for " + $wpfVendorLookup.text ) -severity Error
-                    }
-            }
-            else
-            {
-                [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic') | Out-Null
-                [Microsoft.VisualBasic.Interaction]::MsgBox("Lookup failed. Please check manually at www.whois.net",'critical',"URL Lookup Failed")
-                log-item -logline ("Lookup failed for " + $wpfVendorLookup.text ) -severity Error
-            }
-
-        
-}              
 
 Function Fill-swid
 {
@@ -451,6 +402,95 @@ Function Invoke-MemberOnType #Used in the extraction of MSI properties
     $Target.GetType().InvokeMember($Name,$InvokeAttr,$null,$Target,$Arguments)
 } 
 
+Function Get-MSIInfo {
+        [CmdletBinding()]
+        param (
+            [Parameter(Position=0,Mandatory=$true)]
+            [string]
+            $fullfilename,
+            [Parameter(Position=1)]
+            [Switch]
+            $Overwrite
+        )
+        $Extension = [System.IO.Path]::GetExtension($fullfilename)
+        switch ($extension) {
+                ".msi" {
+                        Log-Item "MSI file chosen"
+
+                        # Get data from the MSI DB
+                        $type = [Type]::GetTypeFromProgID("WindowsInstaller.Installer") 
+                        $installer = [Activator]::CreateInstance($type)
+                        $db = Invoke-MemberOnType "OpenDatabase" $installer @($fullfilename,0)
+                        $view = Invoke-MemberOnType "OpenView" $db ('SELECT * FROM Property')
+                        Invoke-MemberOnType "Execute" $view $null
+                        $record = Invoke-MemberOnType "Fetch" $view $null
+                        
+                        while ($null -ne $record) 
+                        {
+                                $property = Invoke-MemberOnType "StringData" $record 1 "GetProperty"
+                                switch ($property){
+                                        "ProductCode" {
+                                                $value = Invoke-MemberOnType "StringData" $record 2 "GetProperty"
+                                                Log-Item -logline "$property = $value"
+                                                if ($Overwrite -eq $true -or [string]::IsNullorWhiteSpace($WPFUninstallCmd.text)) {
+                                                        $WPFUninstallCmd.text = $value.Trim()
+                                                }
+                                                $wpfUnInstallType.SelectedIndex = 2
+                                        }
+                                        "ProductVersion" {
+                                                $value = Invoke-MemberOnType "StringData" $record 2 "GetProperty"
+                                                Log-Item -logline "$property = $value"
+                                                if ($Overwrite -eq $true -or [string]::IsNullorWhiteSpace($WPFAppversion.text)) {
+                                                        $WPFAppversion.text = $value.Trim()
+                                                }
+                                                
+                                        }
+                                        "ProductName" {
+                                                $value = Invoke-MemberOnType "StringData" $record 2 "GetProperty"
+                                                Log-Item -logline "$property = $value"
+                                                if ($Overwrite -eq $true -or [string]::IsNullorWhiteSpace($wpfappname.text)) {
+                                                        $wpfappname.text = $value.Trim()
+                                                }
+                                        }
+                                        "Manufacturer" {
+                                                $value = Invoke-MemberOnType "StringData" $record 2 "GetProperty"
+                                                Log-Item -logline "$property = $value"
+                                                if ($Overwrite -eq $true -or [string]::IsNullorWhiteSpace($wpfvendor.text)) {
+                                                        $wpfvendor.text = $value.Trim()
+                                                }
+                                        } 
+                                        "ProductLanguage"{
+                                                $value = Invoke-MemberOnType "StringData" $record 2 "GetProperty"
+                                                Log-Item -logline "$property = $value"
+                                                if ($Overwrite -eq $true -or [string]::IsNullorWhiteSpace($wpfapplanguage.text)) {
+                                                        $wpfapplanguage.text = ([System.Globalization.CultureInfo]::GetCultureInfo([int]$value)).DisplayName
+                                                }
+                                        }
+                                }
+                                $record = Invoke-MemberOnType "Fetch" $view $null
+                        }
+                        $wpfinstalltype.SelectedIndex = 0
+                }
+
+                ".exe" {
+                        Log-Item "EXE file chosen"
+                        $FullVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($fullfilename).ProductVersion
+                        $ProductLanguage = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($fullfilename).Language
+                        $Manufacturer = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($fullfilename).CompanyName
+                        $ProductName = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($fullfilename).ProductName
+                        Log-item "Version : $FullVersion" 
+                        $WPFAppversion.text = $FullVersion.Trim()
+                        Log-Item "Language : $ProductLanguage"
+                        Log-Item "Vendor : $Manufacturer"
+                        $wpfvendor.text = $Manufacturer.Trim()
+                        Log-Item "Name : $ProductName"
+                        $wpfappname.text = $productname.Trim()
+                        $wpfinstalltype.SelectedIndex = 1
+                        $wpfUnInstallType.SelectedIndex = 1
+                }
+        }
+}
+
 Function File-Picker
 {
         $openFileDialog = New-Object system.windows.forms.openfiledialog
@@ -471,11 +511,9 @@ Function File-Picker
                 $fullfilename = $OpenFileDialog.filename   
                 $filepath =  split-path -path $fullfilename
                 $Filename = split-path -path $fullfilename -Leaf
-                $Extension = [System.IO.Path]::GetExtension($Filename)
                 Log-Item -logline "Filebrowser results :"
                 Log-Item -Logline "selected path = $filepath"
                 Log-Item -Logline "selected filename = $filename"
-                Log-Item -Logline "Filetype = $extension"
 
                 Log-Item -Logline "Clearing all entered fields on Package Tab"
                 $wpfappname.text = ""
@@ -488,8 +526,6 @@ Function File-Picker
                 $WPFAppLanguage.Background = "white"
                 $WPFAppRevision.Text = ""
                 $WPFAppRevision.Background = "white"
-                $wpfVendorLookup.Text = ""
-                $wpfVendorLookup.Background = "white"
                 $wpfregidYY.Text = "YYYY"
                 $wpfregidYY.Background = "white"
                 $wpfregidMM.Text = "MM"
@@ -517,74 +553,9 @@ Function File-Picker
                 $WPFCollections_info.Background = "white"
                 $WPFCollections_info.Content = ""
 
+                Get-MSIInfo -fullfilename $fullfilename -Overwrite
             } 
             else { Log-Item -Logline "File-browser Cancelled!"} 
-
-        switch ($extension) {
-                ".msi" {
-                        Log-Item "MSI file chosen"
-                        $type = [Type]::GetTypeFromProgID("WindowsInstaller.Installer") 
-                        $installer = [Activator]::CreateInstance($type)
-                        $db = Invoke-MemberOnType "OpenDatabase" $installer @($fullfilename,0)
-                        $view = Invoke-MemberOnType "OpenView" $db ('SELECT * FROM Property')
-                        Invoke-MemberOnType "Execute" $view $null
-                        $record = Invoke-MemberOnType "Fetch" $view $null
-                    
-                        while ($record -ne $null) 
-                        {
-                            $property = Invoke-MemberOnType "StringData" $record 1 "GetProperty"
-                           switch ($property){
-                                "ProductCode" {
-                                        $value = Invoke-MemberOnType "StringData" $record 2 "GetProperty"
-                                        Log-Item -logline "$property = $value"
-                                        $WPFUninstallCmd.text = $value.Trim()
-                                        $wpfUnInstallType.SelectedIndex = 2
-                                }
-                                "ProductVersion" {
-                                        $value = Invoke-MemberOnType "StringData" $record 2 "GetProperty"
-                                        Log-Item -logline "$property = $value"
-                                        $WPFAppversion.text = $value.Trim()
-                                }
-                                "ProductName" {
-                                        $value = Invoke-MemberOnType "StringData" $record 2 "GetProperty"
-                                        Log-Item -logline "$property = $value"
-                                        $wpfappname.text = $value.Trim()
-                                }
-                                "Manufacturer" {
-                                        $value = Invoke-MemberOnType "StringData" $record 2 "GetProperty"
-                                        Log-Item -logline "$property = $value"
-                                        $wpfvendor.text = $value.Trim()
-                                } 
-                                "ProductLanguage"{
-                                        $value = Invoke-MemberOnType "StringData" $record 2 "GetProperty"
-                                        Log-Item -logline "$property = $value"
-                                }
-                           }
-                            $record = Invoke-MemberOnType "Fetch" $view $null
-                        }
-
-
-                        $wpfinstalltype.SelectedIndex = 0
-                }
-
-                ".exe" {
-                        Log-Item "EXE file chosen"
-                        $FullVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($fullfilename).ProductVersion
-                        $ProductLanguage = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($fullfilename).Language
-                        $Manufacturer = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($fullfilename).CompanyName
-                        $ProductName = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($fullfilename).ProductName
-                        Log-item "Version : $FullVersion" 
-                        $WPFAppversion.text = $FullVersion.Trim()
-                        Log-Item "Language : $ProductLanguage"
-                        Log-Item "Vendor : $Manufacturer"
-                        $wpfvendor.text = $Manufacturer.Trim()
-                        Log-Item "Name : $ProductName"
-                        $wpfappname.text = $productname.Trim()
-                        $wpfinstalltype.SelectedIndex = 1
-                        $wpfUnInstallType.SelectedIndex = 1
-                        
-                }
-        }
         
         $wpfinputsource.text = $filepath
         $wpfinstallpath.text = $filename
@@ -1550,29 +1521,6 @@ $wpfUnInstallType.add_Selectionchanged(
         }
 )
 
-$wpfBTN_Lookup.add_click({
-        $url = $wpfVendorLookup.text
-        $url = $url.toupper()
-        
-        if ($url.substring(0,3) -eq "WWW")
-        {
-                $url = $url.trimstart("W.")
-                lookup-url $url
-        }
-        else 
-        {
-                lookup-url $url
-        }
-})
-
-$wpfVendorLookup.add_gotfocus({
-        if($wpfVendorLookup.Tag -ne 'cleared') 
-        { # clear the text box
-                $wpfVendorLookup.Text = ''
-                $wpfVendorLookup.Tag = 'cleared' # use any text you want to indicate that its cleared
-        }
-})
-
 $wpfinputSource.add_gotfocus({
 
         if($wpfinputSource.Tag -ne 'cleared') 
@@ -1827,6 +1775,3 @@ $form.add_closing({
 })
 $form.title = "Powershell App deployment Tookit - GUI - Version $Gui_version"
 $Form.ShowDialog() | out-null
-
-#$wpfVendor | Get-Member -MemberType Event
-#$wpfVendor | Get-member Add* -MemberType Method -force

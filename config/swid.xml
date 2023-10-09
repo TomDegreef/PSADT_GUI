@@ -20,6 +20,16 @@
       <Month>03</Month>
       <Domain>COM.IBM</Domain>
     </Vendor>
+    <Vendor Name="Kyndryl">
+      <Year>2021</Year>
+      <Month>11</Month>
+      <Domain>COM.Kyndryl</Domain>
+    </Vendor>
+    <Vendor Name="ISM Canada">
+      <Year>1973</Year>
+      <Month>05</Month>
+      <Domain>COM.ISMCanada</Domain>
+    </Vendor>
     <Vendor Name="Google">
       <Year>1997</Year>
       <Month>09</Month>
